@@ -1,8 +1,36 @@
+<script setup>
+const { $gsap } = useNuxtApp()
+const sphereRef = ref(null)
+const { onLoop } = useRenderLoop()
+
+onLoop(({ elapsed }) => {
+  const sphere = sphereRef.value
+  // if (sphere) {
+  //   sphere.rotation.x += 0.01
+  //   sphere.rotation.y += 0.01
+  //   sphere.position.y = Math.sin(elapsed)
+  // }
+  //useGsap.to(sphereRef.value.$el, { y: 100, duration: 1, yoyo: true, repeate: -1 })
+})
+
+onMounted(async () => {
+  await nextTick()
+  console.log("sphereRef.value = ", sphereRef.value)
+  $gsap.to(sphereRef.value.position, {
+    y: 1,
+    duration: 1,
+    yoyo: true,
+    repeat: -1,
+    ease: "power1.inOut",
+  })
+})
+</script>
+
 <template>
   <TresCanvas window-size clear-color="black">
     <TresPerspectiveCamera />
     <OrbitControls />
-    <TresMesh>
+    <TresMesh ref="sphereRef">
       <TresSphereGeometry />
       <TresMeshNormalMaterial />
     </TresMesh>
